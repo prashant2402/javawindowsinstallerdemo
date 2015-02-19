@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.rsvadhis.java</groupId>
+	<artifactId>javawindowsinstaller</artifactId>
+	<version>1.0.0</version>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>distrib</exclude>
+								</excludes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<shadedArtifactAttached>true</shadedArtifactAttached> <!-- Make the shaded artifact not the main one -->
+					<shadedClassifierName>shaded</shadedClassifierName> <!-- set the suffix to the shaded jar -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>1.5.2</version>
+				<executions>
+
+					<!-- GUI exe -->
+					<execution>
+						<id>l4j-gui</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<stayAlive>false</stayAlive>
+							<outfile>target/javawindowsinstallerdemo.exe</outfile>
+							<jar>target/${project.artifactId}-${project.version}-shaded.jar</jar> <!-- 'shaded' is the value set on shadedClassifierName above -->
+							<errTitle>App Err</errTitle>
+							<classPath>
+								<mainClass>com.rsvadhis.java.javawindowsinstaller.GuiApp</mainClass>
+								<postCp>config</postCp>
+							</classPath>
+							<singleInstance>
+								<mutexName>javawindowsinstallerdemo</mutexName>
+								<windowTitle>Java Windows Installer Demo</windowTitle>
+							</singleInstance>
+							<jre>
+								<minVersion>1.6.0</minVersion>
+								<initialHeapSize>128</initialHeapSize>
+								<maxHeapSize>512</maxHeapSize>
+							</jre>
+							<versionInfo>
+								<fileVersion>1.0.0.0</fileVersion>
+								<txtFileVersion>1.0.0.0</txtFileVersion>
+								<fileDescription>Desc</fileDescription>
+								<copyright>C</copyright>
+								<productVersion>1.0.0.0</productVersion>
+								<txtProductVersion>1.0.0.0</txtProductVersion>
+								<productName>Java Windows Installer Demo</productName>
+								<internalName>Java Windows Installer Demo</internalName>
+								<originalFilename>javawindowsinstallerdemo.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout-swing</artifactId>
+			<version>4.2</version>
+		</dependency>
+	</dependencies>
+</project>

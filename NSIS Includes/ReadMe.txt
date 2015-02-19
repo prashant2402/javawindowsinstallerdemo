@@ -1,0 +1,1 @@
+Copy these files with .nsh extension under 'Include' directory of NSIS installation folder.
